@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <rect width="180" height="180" fill="#0d1219"/>
+  <circle cx="90" cy="72" r="30" fill="none" stroke="#1e2d3d" stroke-width="2"/>
+  <path d="M90 42 L90 72 M75 57 L90 72 L105 57" stroke="#2a3f57" stroke-width="1.5" fill="none"/>
+  <path d="M40 150 Q90 110 140 150" stroke="#1e2d3d" stroke-width="2" fill="none"/>
+  <text x="90" y="172" text-anchor="middle" font-family="monospace" font-size="10" fill="#4a6070">UNKNOWN</text>
+  <!-- Dashed border -->
+  <rect x="4" y="4" width="172" height="172" rx="4" fill="none" stroke="#ff3355" stroke-width="1" stroke-dasharray="6,4" opacity="0.4"/>
+</svg>

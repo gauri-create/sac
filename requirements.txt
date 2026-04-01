@@ -1,0 +1,21 @@
+# ── Core ────────────────────────────────────────────────────────────────────
+numpy>=1.24.0
+opencv-python>=4.8.0        # Real-time video capture & frame processing
+face-recognition>=1.3.0     # High-level face detection + 128-d encodings
+dlib>=19.24.0               # face_recognition dependency (C++ compiled)
+
+# ── Web server ────────────────────────────────────────────────────────────────
+Flask>=3.0.0
+flask-cors>=4.0.0
+
+# ── Database ──────────────────────────────────────────────────────────────────
+# SQLite is built into Python — no extra package required.
+# Uncomment the line below ONLY if using MySQL (DB_BACKEND=mysql):
+# mysql-connector-python>=8.3.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+Pillow>=10.0.0              # Image I/O helpers
+
+# ── Production deployment (optional) ─────────────────────────────────────────
+gunicorn>=21.2.0            # WSGI server for cloud deployment
+python-dotenv>=1.0.0        # .env file support

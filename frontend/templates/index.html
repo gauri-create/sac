@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureEye — AI Entry System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/dashboard.css" />
+</head>
+<body>
+
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">
+      <span class="logo-icon">⬡</span>
+      <span class="logo-text">SECURE<em>EYE</em></span>
+    </div>
+    <nav class="header-nav">
+      <button class="nav-tab active" data-tab="overview">Overview</button>
+      <button class="nav-tab" data-tab="logs">Access Logs</button>
+      <button class="nav-tab" data-tab="unknown">Unknown Faces</button>
+      <button class="nav-tab" data-tab="users">Known Users</button>
+    </nav>
+    <div class="header-status">
+      <span class="status-dot" id="systemDot"></span>
+      <span class="status-label" id="systemLabel">IDLE</span>
+      <span class="time-display" id="clockDisplay"></span>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- TAB: OVERVIEW -->
+    <section class="tab-panel active" id="tab-overview">
+      <div class="stats-row">
+        <div class="stat-card" id="stat-total">
+          <div class="stat-value" id="totalEvents">—</div>
+          <div class="stat-label">Total Events</div>
+          <div class="stat-accent"></div>
+        </div>
+        <div class="stat-card highlight" id="stat-inside">
+          <div class="stat-value" id="insideNow">—</div>
+          <div class="stat-label">Inside Now</div>
+          <div class="stat-accent"></div>
+        </div>
+        <div class="stat-card" id="stat-today">
+          <div class="stat-value" id="todayEvents">—</div>
+          <div class="stat-label">Today</div>
+          <div class="stat-accent"></div>
+        </div>
+        <div class="stat-card danger" id="stat-unknown">
+          <div class="stat-value" id="unknownFaces">—</div>
+          <div class="stat-label">Unknown Faces</div>
+          <div class="stat-accent"></div>
+        </div>
+        <div class="stat-card" id="stat-known">
+          <div class="stat-value" id="knownPeople">—</div>
+          <div class="stat-label">Known People</div>
+          <div class="stat-accent"></div>
+        </div>
+      </div>
+
+      <div class="overview-grid">
+        <div class="panel camera-panel">
+          <div class="panel-header">
+            <span class="panel-title">Live Feed</span>
+            <div class="camera-controls">
+              <button class="btn-start" id="btnStart">▶ START</button>
+              <button class="btn-stop"  id="btnStop">■ STOP</button>
+            </div>
+          </div>
+          <div class="camera-frame">
+            <img id="videoFeed" src="/stream/video_feed" alt="Live camera feed" />
+            <div class="camera-hud">
+              <div class="hud-corner tl"></div>
+              <div class="hud-corner tr"></div>
+              <div class="hud-corner bl"></div>
+              <div class="hud-corner br"></div>
+              <div class="scan-line-anim"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel inside-panel">
+          <div class="panel-header">
+            <span class="panel-title">Currently Inside</span>
+            <span class="badge-live">LIVE</span>
+          </div>
+          <div class="inside-list" id="insideList">
+            <div class="empty-state">No one detected yet</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel timeline-panel">
+        <div class="panel-header">
+          <span class="panel-title">Recent Activity</span>
+          <span class="refresh-hint">Auto-refreshes every 5s</span>
+        </div>
+        <div class="timeline" id="timeline">
+          <div class="empty-state">Waiting for events…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: LOGS -->
+    <section class="tab-panel" id="tab-logs">
+      <div class="panel full-panel">
+        <div class="panel-header">
+          <span class="panel-title">Access Log Search</span>
+          <span class="log-count" id="logCount"></span>
+        </div>
+        <div class="search-bar">
+          <input type="text"  class="search-input" id="searchName"   placeholder="Search by name…" />
+          <input type="date"  class="search-input" id="searchDate"   />
+          <select             class="search-input" id="searchStatus" >
+            <option value="">All Status</option>
+            <option value="INSIDE">Inside</option>
+            <option value="OUTSIDE">Outside</option>
+          </select>
+          <button class="btn-search" id="btnSearch">Search</button>
+          <button class="btn-clear"  id="btnClear">Clear</button>
+        </div>
+        <div class="table-wrap">
+          <table class="log-table" id="logsTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Entry Time</th>
+                <th>Exit Time</th>
+                <th>Duration</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody">
+              <tr><td colspan="6" class="empty-state">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: UNKNOWN FACES -->
+    <section class="tab-panel" id="tab-unknown">
+      <div class="panel full-panel">
+        <div class="panel-header">
+          <span class="panel-title">Unknown Face Gallery</span>
+          <span class="badge-warn">⚠ Unidentified</span>
+        </div>
+        <div class="unknown-gallery" id="unknownGallery">
+          <div class="empty-state">No unknown faces captured yet.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: USERS -->
+    <section class="tab-panel" id="tab-users">
+      <div class="panel full-panel">
+        <div class="panel-header">
+          <span class="panel-title">Registered Users</span>
+          <button class="btn-rebuild" id="btnRebuild">⟳ Rebuild Encodings</button>
+        </div>
+        <div class="table-wrap">
+          <table class="log-table" id="usersTable">
+            <thead>
+              <tr>
+                <th>#</th><th>Name</th><th>Encoding Path</th><th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="4" class="empty-state">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

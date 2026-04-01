@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: secureeye
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT --timeout 120 "backend.app:create_app()"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PORT
+        value: 10000
+      - key: DB_BACKEND
+        value: sqlite
+      - key: SQLITE_PATH
+        value: data/access_logs.db
+      - key: FLASK_DEBUG
+        value: 0

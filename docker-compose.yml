@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+
+  # ── SecureEye web dashboard ────────────────────────────────────────────────
+  secureeye:
+    build: .
+    container_name: secureeye_app
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./data/known_faces:/app/data/known_faces
+    environment:
+      - PORT=5050
+      - DB_BACKEND=sqlite
+      - SQLITE_PATH=data/access_logs.db
+      - SECRET_KEY=change-me-in-production
+      - CAMERA_INDEX=0
+    # For webcam access on Linux:
+    # devices:
+    #   - /dev/video0:/dev/video0
+    restart: unless-stopped
+
+  # ── Optional: MySQL backend ────────────────────────────────────────────────
+  # Uncomment this section and set DB_BACKEND=mysql above to use MySQL.
+  #
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: secureeye_mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpass
+  #     MYSQL_DATABASE: secure_entry
+  #     MYSQL_USER: secureeye
+  #     MYSQL_PASSWORD: securepass
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+volumes:
+  mysql_data:
